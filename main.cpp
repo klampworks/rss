@@ -105,6 +105,9 @@ int main(int argc, char **argv) {
 
 	QApplication app(argc, argv);
 	rss_gui window;
+	//app.setStyleSheet("QScrollBar { background-color:transparent }");
+	//app.setStyleSheet(" QPushButton:hover { color: red }");
+	//app.setStyleSheet(" QPushButton:hover { border:1px solid white }");
 
 	const static std::string filename("rss.xml");
 	std::ifstream ifs(filename.c_str());
@@ -143,7 +146,7 @@ int main(int argc, char **argv) {
 		}
 	} while (st!=en);
 
-	window.resize(500, 500);
+	//window.resize(500, 500);
 	window.show();
 	return app.exec();
 

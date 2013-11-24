@@ -9,6 +9,7 @@
 #include <vector>
 #include <QPushButton>
 #include <string>
+#include <QScrollArea>
 
 class rss_gui : public QWidget { 
 
@@ -23,6 +24,7 @@ class rss_gui : public QWidget {
 	unsigned corner;
 	std::vector<QPushButton*> items;
 	QVBoxLayout *v_layout;
+	QScrollArea *s;
 		
 };
 #endif

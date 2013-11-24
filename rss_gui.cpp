@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QPalette>
 #include <QScrollArea>
+#include <QScrollBar>
 
 
 rss_gui::rss_gui(QWidget *parent) : QWidget(parent) {
@@ -37,15 +38,17 @@ rss_gui::rss_gui(QWidget *parent) : QWidget(parent) {
 	this->setLayout(t);
 
 	//Create a scrollarea, add it to the main window layout
-	QScrollArea *s = new QScrollArea(this);
+	s = new QScrollArea(this);
 	s->setWidgetResizable(true); //this is fucking important.
 
 	QPalette pal;
-	pal.setColor(QPalette::Button,Qt::transparent);
+	pal.setColor(QPalette::Window, Qt::transparent);
 	s->setPalette(pal);
-	s->setAttribute(Qt::WA_TranslucentBackground);
-	s->setStyleSheet("background-color:transparent;border:0px;");
-
+	s->setFrameShape(QFrame::NoFrame);
+//	s->setAttribute(Qt::WA_TranslucentBackground);
+//	s->setStyleSheet("background-color:transparent; border:0px;");
+//	this->setStyleSheet("QScrollArea { background-color:transparent;}");//border:0px;");
+//	this->setStyleSheet("#mywidget{ background-color:transparent; }");
 
 
 	t->addWidget(s);
@@ -55,12 +58,17 @@ rss_gui::rss_gui(QWidget *parent) : QWidget(parent) {
 
 	//Create a layout for the conents.
 	v_layout = new QVBoxLayout(contents);
+	v_layout->setSpacing(0);
 	contents->setLayout(v_layout);
+	contents->setContentsMargins(5,5,15,5);
 
 
 	//this->setLayout(v_layout);
 
 	s->setWidget(contents);
+	s->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	//resize(s->verticalScrollBar()->width() + width(), 0);
+
 }
 
 void rss_gui::add_item(const std::string &title) {
@@ -69,9 +77,13 @@ void rss_gui::add_item(const std::string &title) {
 	QPushButton *b = new QPushButton(QString::fromStdString(title));
 	b->setFlat(true);
 	//b->setMinimumHeight(10);
+	QFont font = b->font();
+	font.setPointSize(8);
+	b->setFont(font);
 	QPalette pal;
-	pal.setColor(QPalette::Button,Qt::transparent);
+	pal.setColor(QPalette::Button, Qt::transparent);
 	b->setPalette(pal);
+	//b->setStyleSheet("border:1px;");
 	v_layout->addWidget(b);
 	b->show();
 
