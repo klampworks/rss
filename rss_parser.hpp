@@ -20,5 +20,6 @@ struct rss_grammar : boost::spirit::qi::grammar<std::string::const_iterator, rss
 namespace rss_parser {
 
 	std::vector<rss_item> parse_file(const char *);
+	std::vector<rss_item> parse_xml(const std::string &xml);
 }
 #endif
