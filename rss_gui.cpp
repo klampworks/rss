@@ -68,6 +68,8 @@ rss_gui::rss_gui(QWidget *parent) : QWidget(parent) {
 	s->setWidget(contents);
 	s->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	//resize(s->verticalScrollBar()->width() + width(), 0);
+	pal.setColor(QPalette::Window, Qt::transparent);
+	s->verticalScrollBar()->setAutoFillBackground(true);//setPalette(pal);
 
 }
 
