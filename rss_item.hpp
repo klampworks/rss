@@ -5,8 +5,8 @@
 class rss_item {
 
 	public:
-	std::string title, description, link;
+	std::wstring title, description, link;
 	long date;
-	void set_date(const std::string &input);
+	void set_date(const std::wstring &input);
 };
 #endif

@@ -43,9 +43,9 @@ rss_gui::rss_gui(QWidget *parent) : fragment(parent) {
 	item_bg.setColor(QPalette::Button, Qt::transparent);
 }
 
-void rss_gui::add_item(const std::string &title) {
+void rss_gui::add_item(const std::wstring &title) {
 
-	QPushButton *b = new QPushButton(QString::fromStdString(title));
+	QPushButton *b = new QPushButton(QString::fromWCharArray(title.c_str()));
 	b->setFlat(true);
 	b->setFont(item_font);
 	b->setPalette(item_bg);

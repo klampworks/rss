@@ -16,7 +16,7 @@ class rss_gui : public fragment {
 
 	public: 
 	rss_gui(QWidget *parent = NULL);
-	void add_item(const std::string&);
+	void add_item(const std::wstring&);
 
 	protected:
 	std::vector<QPushButton*> items;
