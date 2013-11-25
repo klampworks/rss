@@ -27,15 +27,15 @@ rss_grammar::rss_grammar() : rss_grammar::base_type(start) {
 	close_tag = &lit(L"</") >> L"</" >>
 		end_tag(boost::spirit::qi::labels::_r1);
 
-	end_tag = boost::spirit::ascii::string(boost::spirit::qi::labels::_r1) >> 
+	end_tag = boost::spirit::standard_wide::string(boost::spirit::qi::labels::_r1) >> 
 		L">";
 
 	junk = tag_text;
-	tag_text = +(+(boost::spirit::ascii::char_ - '<') | cdata);
+	tag_text = +(+(html_entity | (char_ - L'<')) | cdata);
 
 	cdata = L"<![CDATA[" >> 
 		*(
-			char_ - lit(L"]]>")
+			html_entity | (char_ - lit(L"]]>"))
 		) >> 
 		lit(L"]]>");
 
@@ -50,7 +50,7 @@ rss_grammar::rss_grammar() : rss_grammar::base_type(start) {
 		lit(L"</item>");	
 
 
-        html_entity = (lit('&') >> lit('#') >> boost::spirit::int_[_a = _1] >> lit(';')[_val = _a]);
+        html_entity = (lit(L'&') >> lit(L'#') >> boost::spirit::int_[_a = _1] >> lit(L';')[_val = _a]);
 }
 
 namespace rss_parser {
@@ -72,6 +72,7 @@ namespace rss_parser {
 			rss_item tmp;
 			if (boost::spirit::qi::parse(st, en, g, tmp)) {
 				ret.push_back(tmp);
+				std::wcout << tmp.description << std::endl;
 			} else {
 				st++;
 			}
