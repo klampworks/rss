@@ -4,6 +4,18 @@
 #include <boost/spirit/include/qi.hpp>
 #include "rss_item.hpp"
 
+struct img_grammar : boost::spirit::qi::grammar<std::string::const_iterator, std::string()> {
+
+	img_grammar();
+    boost::spirit::qi::rule<std::string::const_iterator, boost::spirit::unused_type(std::string, std::string, std::string)> find_tag;
+	
+        boost::spirit::qi::rule<std::string::const_iterator, std::string()> start;
+        boost::spirit::qi::rule<std::string::const_iterator, boost::spirit::unused_type(std::string)> find_name;
+        boost::spirit::qi::rule<std::string::const_iterator, boost::spirit::locals<std::string>, boost::spirit::qi::unused_type(std::string, std::string)> find_att;
+
+        boost::spirit::qi::rule<std::string::const_iterator, std::string(std::string)> parse_att;
+};
+
 struct rss_grammar : boost::spirit::qi::grammar<std::wstring::const_iterator, rss_item()> {
 
 	rss_grammar();
@@ -22,5 +34,6 @@ namespace rss_parser {
 
 	std::vector<rss_item> parse_file(const char *);
 	std::vector<rss_item> parse_xml(const std::string &xml);
+	std::string parse_img(const std::string &xml);
 }
 #endif

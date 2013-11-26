@@ -29,6 +29,12 @@ int main(int argc, char **argv) {
 
 	for (const auto &item : items) {
 		window.add_item(item.title);
+		std::string link;
+		link.assign(item.link.begin(), item.link.end());
+		std::string xml = rss_grabber::grab_xml(link.c_str());
+		std::string url = rss_parser::parse_img(xml);
+		std::cout << url << std::endl;
+
 	}
 
 	window.show();
