@@ -6,8 +6,10 @@
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
+#include <thread>
 
-void proccess_img(std::string link) {
+
+void process_img(std::string link) {
 
 	//TODO: This is nearly the same code repeated, refactor please.
 
@@ -29,6 +31,11 @@ void proccess_img(std::string link) {
 		xml = rss_grabber::grab_xml(link.c_str());
 		ifs.close();
 
+		if (xml.empty()) {
+			process_img(link);
+			return;
+		}
+
 		//Cache the text for next time.
 		std::ofstream ofs(name);
 		ofs << xml;
@@ -38,9 +45,16 @@ void proccess_img(std::string link) {
 		//This page has been chached, read it into a string.
 		std::getline(ifs, xml, char(-1));
 		ifs.close();
+
+		if (xml.empty()) {
+			unlink(name.c_str());
+			process_img(link);
+			return;
+		}
 	}
 	
 	//Parse the link.
+	assert(!xml.empty());
 	link = rss_parser::parse_img(xml);
 
 	t_link = link.substr(0, link.length() - 1);
@@ -57,6 +71,15 @@ void proccess_img(std::string link) {
 		ofs.close();
 
 	} //else we already have this image, nevermind.
+}
+
+void process_img_list(const std::vector<rss_item> &list) {
+
+	for (const auto &l: list) {
+		std::string link;
+		link.assign(l.link.begin(), l.link.end());
+		process_img(link);
+	}
 }
 
 int main(int argc, char **argv) {
@@ -83,11 +106,8 @@ int main(int argc, char **argv) {
 
 	for (const auto &item : items) {
 		window.add_item(item.title);
-		std::string link;
-		link.assign(item.link.begin(), item.link.end());
-		
-		proccess_img(link);
 	}
+	std::thread t(process_img_list, items); t.detach();
 
 	window.show();
 	return app.exec();
