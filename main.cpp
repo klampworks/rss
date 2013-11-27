@@ -9,7 +9,7 @@
 #include <thread>
 
 
-void process_img(std::string link) {
+void process_img(std::string &&link) {
 
 	//TODO: This is nearly the same code repeated, refactor please.
 
@@ -32,7 +32,7 @@ void process_img(std::string link) {
 		ifs.close();
 
 		if (xml.empty()) {
-			process_img(link);
+			process_img(std::move(link));
 			return;
 		}
 
@@ -48,7 +48,7 @@ void process_img(std::string link) {
 
 		if (xml.empty()) {
 			unlink(name.c_str());
-			process_img(link);
+			process_img(std::move(link));
 			return;
 		}
 	}
@@ -78,7 +78,7 @@ void process_img_list(const std::vector<rss_item> &list) {
 	for (const auto &l: list) {
 		std::string link;
 		link.assign(l.link.begin(), l.link.end());
-		process_img(link);
+		process_img(std::move(link));
 	}
 }
 
