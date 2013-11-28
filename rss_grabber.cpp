@@ -1,5 +1,12 @@
 #include "rss_grabber.hpp"
 #include <sstream>
+#include <fstream>
+#include "rss_item.hpp"
+#include <sys/stat.h>
+#include <unistd.h>
+#include "rss_parser.hpp"
+#include <functional>
+#include <utility>
 
 namespace rss_grabber {
 
@@ -45,4 +52,69 @@ namespace rss_grabber {
 
 		return mi;
 	}
+
+void process_img(std::string &&link) {
+
+	//TODO: This refactoring is a bit vile....
+	const char *path = "cache/";
+	mkdir(path, 0777);
+
+	std::string t_link, name, xml;
+	std::ifstream ifs;
+
+	auto prepare_link = [&link, &t_link, &name, &ifs, &path]() {
+		t_link = link.substr(0, link.length() - 1);
+		name = path + t_link.substr(t_link.find_last_of('/')+1);
+		ifs.open(name);
+	};
+
+	auto save_page = [&xml, &ifs, &link, &name]() {
+
+		xml = grab_xml(link.c_str());
+		ifs.close();
+
+		std::ofstream ofs(name);
+		ofs << xml;
+		ofs.close();
+	};
+
+	prepare_link();
+
+	if (!ifs.good()) {
+
+		//This page has not ben cached.
+		save_page();
+
+	} else {
+
+		//This page has been chached, read it into a string.
+		std::getline(ifs, xml, char(-1));
+		ifs.close();
+
+		if (xml.empty()) {
+			unlink(name.c_str());
+			process_img(std::move(link));
+			return;
+		}
+	}
+	
+	link = rss_parser::parse_img(xml);
+	prepare_link();
+
+	if (!ifs.good()) {
+
+		//grab the image and save it as this name.
+		save_page();
+
+	} //else we already have this image, nevermind.
+}
+
+void process_img_list(const std::vector<rss_item> &list) {
+
+	for (const auto &l: list) {
+		std::string link;
+		link.assign(l.link.begin(), l.link.end());
+		process_img(std::move(link));
+	}
+}
 }
