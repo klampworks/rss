@@ -11,8 +11,12 @@
 #include <string>
 #include <QScrollArea>
 #include "fragment.hpp"
+#include "desc_gui.hpp"
 
 class rss_gui : public fragment { 
+
+	Q_OBJECT
+
 
 	public: 
 	rss_gui(QWidget *parent = NULL);
@@ -26,6 +30,10 @@ class rss_gui : public fragment {
 
 	QFont item_font;
 	QPalette item_bg;
+	desc_gui desc_window;
+
+	public slots:
+	void open_desc();
 		
 };
 #endif

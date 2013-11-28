@@ -8,7 +8,7 @@
 #include <QScrollBar>
 
 
-rss_gui::rss_gui(QWidget *parent) : fragment(parent) {
+rss_gui::rss_gui(QWidget *parent) : fragment(parent), desc_window() {
 
 	setMaximumHeight(200);
 	setFixedHeight(200);
@@ -41,6 +41,7 @@ rss_gui::rss_gui(QWidget *parent) : fragment(parent) {
 
 	item_font.setPointSize(8);
 	item_bg.setColor(QPalette::Button, Qt::transparent);
+
 }
 
 void rss_gui::add_item(const std::wstring &title) {
@@ -49,9 +50,21 @@ void rss_gui::add_item(const std::wstring &title) {
 	b->setFlat(true);
 	b->setFont(item_font);
 	b->setPalette(item_bg);
+	connect(b, SIGNAL(clicked()), this, SLOT(open_desc()));
 
 	v_layout.addWidget(b);
 	b->show();
 
 	items.push_back(b);
+}
+
+void rss_gui::open_desc() {
+
+	if (desc_window.isVisible()) {
+		desc_window.hide();
+	} else {
+		desc_window.show();
+	}
+
+
 }

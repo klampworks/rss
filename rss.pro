@@ -8,7 +8,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += rss_grabber.hpp rss_gui.hpp rss_item.hpp rss_parser.hpp fragment.hpp
-SOURCES += main.cpp rss_grabber.cpp rss_gui.cpp rss_item.cpp rss_parser.cpp fragment.cpp
+HEADERS += rss_grabber.hpp rss_gui.hpp rss_item.hpp rss_parser.hpp fragment.hpp desc_gui.hpp
+SOURCES += main.cpp rss_grabber.cpp rss_gui.cpp rss_item.cpp rss_parser.cpp fragment.cpp desc_gui.cpp
 LIBS += -lcurl
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++11 -g
