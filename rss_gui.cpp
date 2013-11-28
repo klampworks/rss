@@ -8,7 +8,7 @@
 #include <QScrollBar>
 
 
-rss_gui::rss_gui(QWidget *parent) : fragment(parent), desc_window() {
+rss_gui::rss_gui(QWidget *parent) : fragment(parent), desc_window(), sigmap(this) {
 
 	setMaximumHeight(200);
 	setFixedHeight(200);
@@ -42,23 +42,28 @@ rss_gui::rss_gui(QWidget *parent) : fragment(parent), desc_window() {
 	item_font.setPointSize(8);
 	item_bg.setColor(QPalette::Button, Qt::transparent);
 
+	QObject::connect(&sigmap, SIGNAL(mapped(int)), this, SLOT(open_desc(int)));
 }
 
-void rss_gui::add_item(const std::wstring &title) {
+void rss_gui::add_item(rss_item item) {
 
-	QPushButton *b = new QPushButton(QString::fromWCharArray(title.c_str()));
+	QPushButton *b = new QPushButton(QString::fromWCharArray(item.title.c_str()));
 	b->setFlat(true);
 	b->setFont(item_font);
 	b->setPalette(item_bg);
-	connect(b, SIGNAL(clicked()), this, SLOT(open_desc()));
+	//connect(b, SIGNAL(clicked()), this, SLOT(open_desc(item_list.size())));
+	QObject::connect(b, SIGNAL(clicked()), &sigmap, SLOT(map()));
+	sigmap.setMapping(b, item_list.size());
 
 	v_layout.addWidget(b);
 	b->show();
 
 	items.push_back(b);
+	item_list.push_back(item);
 }
 
-void rss_gui::open_desc() {
+#include <iostream>
+void rss_gui::open_desc(int i) {
 
 	if (desc_window.isVisible()) {
 		desc_window.hide();
@@ -66,5 +71,6 @@ void rss_gui::open_desc() {
 		desc_window.show();
 	}
 
+	std::cout << "Recieved " << i << std::endl;
 
 }

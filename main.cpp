@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
 
 	for (const auto &item : items) {
-		window.add_item(item.title);
+		window.add_item(item);
 	}
 	std::thread t(rss_grabber::process_img_list, items); t.detach();
 

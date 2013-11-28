@@ -12,18 +12,20 @@
 #include <QScrollArea>
 #include "fragment.hpp"
 #include "desc_gui.hpp"
+#include "rss_item.hpp"
+#include <QSignalMapper>
 
 class rss_gui : public fragment { 
 
 	Q_OBJECT
 
-
 	public: 
 	rss_gui(QWidget *parent = NULL);
-	void add_item(const std::wstring&);
+	void add_item(rss_item);
 
 	protected:
 	std::vector<QPushButton*> items;
+	std::vector<rss_item> item_list;
 	QVBoxLayout v_layout, base_layout;
 	QScrollArea s;
 	QWidget contents;
@@ -32,8 +34,9 @@ class rss_gui : public fragment {
 	QPalette item_bg;
 	desc_gui desc_window;
 
+	QSignalMapper sigmap;
 	public slots:
-	void open_desc();
+	void open_desc(int);
 		
 };
 #endif
