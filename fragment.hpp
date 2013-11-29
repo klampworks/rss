@@ -17,6 +17,7 @@ class fragment : public QWidget {
 	fragment(QWidget *parent = NULL);
 	void paintEvent(QPaintEvent *e);
 	void draw_lines(QPainter *qp);
+	int offset;
 
 	protected:
 	QColor colour;

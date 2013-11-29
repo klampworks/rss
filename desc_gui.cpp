@@ -8,7 +8,7 @@
 #include <QScrollBar>
 
 desc_gui::desc_gui(QWidget *parent) : fragment(parent),
-	description(this),
+	description(),
 	layout(this) {
 
 	setMaximumHeight(200);

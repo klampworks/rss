@@ -10,6 +10,8 @@ fragment::fragment(QWidget *parent) : QWidget(parent) {
 	
 	this->corner = 15;
 	this->colour = QColor(11, 11, 44, 127);
+	offset = 0;
+
 }
 
 void fragment::paintEvent(QPaintEvent *e) {
@@ -17,9 +19,11 @@ void fragment::paintEvent(QPaintEvent *e) {
 	Q_UNUSED(e);
 	QPainter qp(this);
 	draw_lines(&qp);
+
+	//TODO: This is a hack.
 	QDesktopWidget *desktop = QApplication::desktop();
 	int width = desktop->width();
-	move((width - this->width())-1, 410);
+	move((width - this->width())-1-offset, 410);
 }
 
 void fragment::draw_lines(QPainter *qp) {

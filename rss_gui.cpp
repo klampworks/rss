@@ -69,7 +69,7 @@ void rss_gui::open_desc(int i) {
 		desc_window.hide();
 	} else {
 		desc_window.show();
-		desc_window.move(x()-desc_window.width(), y());
+	desc_window.offset = width() + 10;
 	}
 
 	desc_window.add_desc(QString::fromWCharArray(item_list[i].description.c_str()));
