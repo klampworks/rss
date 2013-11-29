@@ -44,6 +44,8 @@ desc_gui::desc_gui(QWidget *parent) : fragment(parent),
 	item_bg.setColor(QPalette::Button, Qt::transparent);
 
 	description.setReadOnly(true);
+	description.viewport()->setAutoFillBackground(false);
+	description.setFrameShape(QFrame::NoFrame);
 
 	layout.addWidget(&description);
 	setLayout(&layout);
