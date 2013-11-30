@@ -125,19 +125,31 @@ void rss_gui::paintEvent(QPaintEvent *e) {
 
 void rss_gui::open_desc(int i) {
 
-	//Avoid multiple hash lookups.
-	rss_item *working_item = &item_list[i];
+	//This will hold the value of i the last time this method was called.
+	static int last = -1;
 
-	desc_window.add_desc(QString::fromWCharArray(working_item->description.c_str()));
-	desc_window.set_image(working_item->path);
+	//If this window is already open and filled with the centents from index i then...
+	if (desc_window.isVisible() && last == i) {
 
-	if (desc_window.isVisible()) {
+		//Close this window.
 		desc_window.hide();
 	} else {
-		desc_window.show();
-		//desc_window.offset = width() + 10;
-		desc_window.move(x() - desc_window.width() - 10, y());
+
+		//Avoid multiple hash lookups.
+		rss_item *working_item = &item_list[i];
+
+		//Set the description and preview image.
+		desc_window.add_desc(QString::fromWCharArray(working_item->description.c_str()));
+		desc_window.set_image(working_item->path);
+
+		//If the window is not already visible make it so.
+		if (!desc_window.isVisible()) {
+			desc_window.show();
+			desc_window.move(x() - desc_window.width() - 10, y());
+		}
 	}
+
+	last = i;
 }
 
 void rss_gui::refresh_update() {
