@@ -19,15 +19,25 @@ rss_gui::rss_gui(std::string url_p, QColor bg_colour, QWidget *parent) :
 	setMaximumHeight(200);
 	setFixedHeight(200);
 
+	QPalette pal;
+	pal.setColor(QPalette::Window, Qt::transparent);
+
 	//Add a layout to the main window.
 	this->setLayout(&base_layout);
+
+	settings.setIcon(QPixmap(QString("settings.png")));
+	settings.setFlat(true);
+	settings.setPalette(pal);
+	settings.setFixedSize(16, 16);
+
+	topbar.addWidget(&topbar_title);
+	topbar.addWidget(&settings);
+	base_layout.addLayout(&topbar);
 
 	//Create a scrollarea, add it to the main window layout
 	s.setWidgetResizable(true); //this is fucking important.
 
 	//Make the scrollarea transparent and borderless.
-	QPalette pal;
-	pal.setColor(QPalette::Window, Qt::transparent);
 	s.setPalette(pal);
 	s.setFrameShape(QFrame::NoFrame);
 

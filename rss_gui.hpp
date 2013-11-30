@@ -33,6 +33,10 @@ class rss_gui : public fragment {
 	QScrollArea s;
 	QWidget contents;
 
+	QHBoxLayout topbar;
+	QLabel topbar_title;
+	QPushButton settings;
+
 	QFont item_font;
 	QPalette item_bg;
 	desc_gui desc_window;
