@@ -8,5 +8,6 @@ class rss_item {
 	std::wstring title, description, link;
 	long date;
 	void set_date(const std::wstring &input);
+	std::string path;
 };
 #endif

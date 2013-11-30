@@ -53,7 +53,7 @@ namespace rss_grabber {
 		return mi;
 	}
 
-void process_img(std::string &&link) {
+std::string process_img(std::string &&link) {
 
 	//TODO: This refactoring is a bit vile....
 	const char *path = "cache/";
@@ -93,8 +93,8 @@ void process_img(std::string &&link) {
 
 		if (xml.empty()) {
 			unlink(name.c_str());
-			process_img(std::move(link));
-			return;
+			//TODO: this could lead to infinite recursion.
+			return process_img(std::move(link));
 		}
 	}
 	
@@ -107,14 +107,19 @@ void process_img(std::string &&link) {
 		save_page();
 
 	} //else we already have this image, nevermind.
+
+	//Copy ellision.
+	return std::move(name);
 }
 
-void process_img_list(const std::map<unsigned, rss_item> &list) {
+void process_img_list(const std::map<unsigned, rss_item> &list, rss_gui *window) {
 
 	for (const auto &l: list) {
+
 		std::string link;
 		link.assign(l.second.link.begin(), l.second.link.end());
-		process_img(std::move(link));
+		std::string filepath = process_img(std::move(link));
+		window->add_path(l.first, std::move(filepath));
 	}
 }
 

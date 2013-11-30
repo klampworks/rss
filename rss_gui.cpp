@@ -67,6 +67,10 @@ void rss_gui::add_items(std::map<unsigned, rss_item> item_map) {
 	}
 }
 
+void rss_gui::add_path(unsigned index, std::string &&path) {
+	item_list[index].path = path;
+}
+
 #include <iostream>
 void rss_gui::open_desc(int i) {
 
@@ -78,5 +82,7 @@ void rss_gui::open_desc(int i) {
 	}
 
 	desc_window.add_desc(QString::fromWCharArray(item_list[i].description.c_str()));
+
+	std::cout << "Path in " << item_list[i].path << std::endl;
 
 }

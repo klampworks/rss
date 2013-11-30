@@ -23,6 +23,7 @@ class rss_gui : public fragment {
 	public: 
 	rss_gui(QWidget *parent = NULL);
 	void add_items(std::map<unsigned, rss_item>);
+	void add_path(unsigned, std::string&&);
 
 	protected:
 	std::vector<QPushButton*> items;

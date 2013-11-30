@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 
 	window.add_items(item_map);
 
-	std::thread t(rss_grabber::process_img_list, item_map); t.detach();
+	std::thread t(rss_grabber::process_img_list, item_map, &window); t.detach();
 
 	window.show();
 	return app.exec();
