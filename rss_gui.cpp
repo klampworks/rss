@@ -71,9 +71,7 @@ void rss_gui::add_path(unsigned index, std::string &&path) {
 	item_list[index].path = path;
 }
 
-#include <iostream>
 void rss_gui::open_desc(int i) {
-
 
 	//Avoid multiple hash lookups.
 	rss_item *working_item = &item_list[i];

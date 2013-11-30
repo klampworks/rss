@@ -7,6 +7,7 @@
 #include "rss_parser.hpp"
 #include <functional>
 #include <utility>
+#include <QImage>
 
 namespace rss_grabber {
 
@@ -99,17 +100,35 @@ std::string process_img(std::string &&link) {
 	}
 	
 	link = rss_parser::parse_img(xml);
-	prepare_link();
+	t_link = link.substr(0, link.length());
+	name = path + t_link.substr(t_link.find_last_of('/')+1);
+	ifs.open(name);
+
+	size_t ext = name.find_last_of('.');
+	std::string ext_s = name.substr(ext);
+	if (ext_s == ".gif")
+		ext_s = ".jpg";
+
+	std::string new_name = name.substr(0, ext) + "_s" + ext_s;
 
 	if (!ifs.good()) {
 
 		//grab the image and save it as this name.
 		save_page();
 
+		//TODO Do this from data (xml).
+		QImage px(QString::fromStdString(name));
+
+		//TODO 180 is a magic number, should be taken from settings.
+		auto fn = px.width() > px.height() ? &QImage::scaledToWidth : &QImage::scaledToHeight;
+		QImage px_s = (px.*fn)(180, Qt::SmoothTransformation);
+
+		px_s.save(QString::fromStdString(new_name));
+
 	} //else we already have this image, nevermind.
 
 	//Copy ellision.
-	return std::move(name);
+	return std::move(new_name);
 }
 
 void process_img_list(const std::map<unsigned, rss_item> &list, 
