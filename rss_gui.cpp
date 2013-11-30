@@ -74,15 +74,17 @@ void rss_gui::add_path(unsigned index, std::string &&path) {
 #include <iostream>
 void rss_gui::open_desc(int i) {
 
+
+	//Avoid multiple hash lookups.
+	rss_item *working_item = &item_list[i];
+
+	desc_window.add_desc(QString::fromWCharArray(working_item->description.c_str()));
+	desc_window.set_image(working_item->path);
+
 	if (desc_window.isVisible()) {
 		desc_window.hide();
 	} else {
 		desc_window.show();
 	desc_window.offset = width() + 10;
 	}
-
-	desc_window.add_desc(QString::fromWCharArray(item_list[i].description.c_str()));
-
-	std::cout << "Path in " << item_list[i].path << std::endl;
-
 }

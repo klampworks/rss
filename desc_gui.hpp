@@ -12,12 +12,14 @@
 #include <QScrollArea>
 #include "fragment.hpp"
 #include <QTextEdit>
+#include <QLabel>
 
 class desc_gui : public fragment { 
 
 	public: 
 	desc_gui(QWidget *parent = NULL);
 	void add_desc(QString &&);
+	void set_image(const std::string &);
 
 	protected:
 	std::vector<QPushButton*> items;
@@ -30,6 +32,7 @@ class desc_gui : public fragment {
 
 	QTextEdit description;
 	QHBoxLayout layout;
+	QLabel image;
 
 		
 };
