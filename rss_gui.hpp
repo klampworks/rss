@@ -23,7 +23,6 @@ class rss_gui : public fragment {
 
 	public: 
 	rss_gui(std::string, QWidget *parent = NULL);
-	void add_items(std::map<unsigned, rss_item>);
 	void add_path(unsigned, std::string&&);
 
 	protected:
@@ -41,6 +40,7 @@ class rss_gui : public fragment {
 	QSignalMapper sigmap;
 
 	std::string url;
+	void update_items();
 
 	public slots:
 	void open_desc(int);

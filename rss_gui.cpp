@@ -51,22 +51,30 @@ rss_gui::rss_gui(std::string url_p, QWidget *parent) :
 
 	QObject::connect(&sigmap, SIGNAL(mapped(int)), this, SLOT(open_desc(int)));
 
-	connect(&update_timer, SIGNAL(timeout()), this, SLOT(update()));
-//	update_timer.start(1000);
+	if (url.empty()) {
+
+		//This is just for debugging really.
+		item_list = rss_parser::parse_file("rss.xml");
+		update_items();
+		auto cb = std::bind(&rss_gui::add_path, this, std::placeholders::_1, std::placeholders::_2);
+		std::thread t(rss_grabber::process_img_list, item_list, std::move(cb)); t.detach();
+	} else {
+		connect(&update_timer, SIGNAL(timeout()), this, SLOT(update()));
+	//	update_timer.start(1000);
+		update();
+	}
 }
 
-//Needs to be a copy, unfortunantly.
-void rss_gui::add_items(std::map<unsigned, rss_item> item_map) {
+void rss_gui::update_items() {
 
-	//TODO: Used a fixed length list and handle updates correctly.
-	item_list = item_map;
-
+	//Clear out the current items.
 	while (items.size()) {
 		v_layout.removeWidget(items.back());
 		delete items.back();
 		items.pop_back();
 	}
 
+	//Add the new ones.
 	for (const auto &item : item_list) { 
 
 		QPushButton *b = new QPushButton(QString::fromWCharArray(item.second.title.c_str()));
@@ -105,20 +113,11 @@ void rss_gui::open_desc(int i) {
 
 void rss_gui::update() {
 
-	std::vector<rss_item> items;
 	std::string xml = rss_grabber::grab_xml(url.c_str());
-	items = rss_parser::parse_xml(xml);
+	item_list = rss_parser::parse_xml(xml);
 
-	//Convert to map
-	std::map<unsigned, rss_item> item_map;
-
-	//TODO make rss_parser return a map in the first place.
-	for (unsigned i = 0; i < items.size(); i++) {
-		item_map[i] = items[i];
-	}
-
-	add_items(item_map);
+	update_items();
 
 	auto cb = std::bind(&rss_gui::add_path, this, std::placeholders::_1, std::placeholders::_2);
-	std::thread t(rss_grabber::process_img_list, item_map, std::move(cb)); t.detach();
+	std::thread t(rss_grabber::process_img_list, item_list, std::move(cb)); t.detach();
 }

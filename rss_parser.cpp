@@ -105,11 +105,13 @@ rss_grammar::rss_grammar() : rss_grammar::base_type(start) {
 namespace rss_parser {
 
 
-	std::vector<rss_item> parse_xml(const std::string &xml_p) {
+	std::map<unsigned, rss_item> parse_xml(const std::string &xml_p) {
+
+		//Map indecies.
+		static unsigned count = 0;
 
 		rss_grammar g;
-		std::vector<rss_item> ret;
-
+		std::map<unsigned, rss_item> ret;
 
 		std::wstring xml;
 		xml.assign(xml_p.begin(), xml_p.end());
@@ -120,16 +122,16 @@ namespace rss_parser {
 		do {
 			rss_item tmp;
 			if (boost::spirit::qi::parse(st, en, g, tmp)) {
-				ret.push_back(tmp);
+				ret[count++] = tmp;
 			} else {
 				st++;
 			}
 		} while (st!=en);
 
-		return ret;
+		return std::move(ret);
 	}
 
-	std::vector<rss_item> parse_file(const char *filename) {
+	std::map<unsigned, rss_item> parse_file(const char *filename) {
 
 		std::ifstream ifs(filename);
 

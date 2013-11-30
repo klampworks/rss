@@ -3,6 +3,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 #include "rss_item.hpp"
+#include <map>
 
 struct img_grammar : boost::spirit::qi::grammar<std::string::const_iterator, std::string()> {
 
@@ -32,8 +33,8 @@ struct rss_grammar : boost::spirit::qi::grammar<std::wstring::const_iterator, rs
 
 namespace rss_parser {
 
-	std::vector<rss_item> parse_file(const char *);
-	std::vector<rss_item> parse_xml(const std::string &xml);
+	std::map<unsigned, rss_item> parse_file(const char *);
+	std::map<unsigned, rss_item> parse_xml(const std::string &xml);
 	std::string parse_img(const std::string &xml);
 }
 #endif
