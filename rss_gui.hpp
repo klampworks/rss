@@ -15,13 +15,14 @@
 #include "rss_item.hpp"
 #include <QSignalMapper>
 #include <map>
+#include <QTimer>
 
 class rss_gui : public fragment { 
 
 	Q_OBJECT
 
 	public: 
-	rss_gui(QWidget *parent = NULL);
+	rss_gui(std::string, QWidget *parent = NULL);
 	void add_items(std::map<unsigned, rss_item>);
 	void add_path(unsigned, std::string&&);
 
@@ -36,9 +37,14 @@ class rss_gui : public fragment {
 	QPalette item_bg;
 	desc_gui desc_window;
 
+	QTimer update_timer;
 	QSignalMapper sigmap;
+
+	std::string url;
+
 	public slots:
 	void open_desc(int);
+	void update();
 		
 };
 #endif

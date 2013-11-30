@@ -11,10 +11,10 @@
 int main(int argc, char **argv) {
 
 	QApplication app(argc, argv);
-	rss_gui window;
 
 	std::vector<rss_item> items;
 
+	std::string url("");
 	if (argc < 2) {
 		
 		std::cout << "Pass the url of the RSS feed as the first argument." << std::endl;
@@ -23,11 +23,13 @@ int main(int argc, char **argv) {
 	} else {
 
 		//This is ok until we have a settings window.
-		const char *url = argv[1];
+		url = argv[1];
 
-		std::string xml = rss_grabber::grab_xml(url);
+		std::string xml = rss_grabber::grab_xml(url.c_str());
 		items = rss_parser::parse_xml(xml);
 	}
+
+	rss_gui window(url);
 
 	//Convert to map
 	std::map<unsigned, rss_item> item_map;
