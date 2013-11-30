@@ -34,6 +34,7 @@ rss_gui::rss_gui(std::string url_p, QColor bg_colour, QWidget *parent) :
 	refresh.setFlat(true);
 	refresh.setPalette(pal);
 	refresh.setFixedSize(16, 16);
+	connect(&refresh, SIGNAL(clicked()), this, SLOT(refresh_update()));
 
 	topbar_title.setText("Title");
 	topbar_title.setAlignment(Qt::AlignHCenter);
@@ -137,6 +138,18 @@ void rss_gui::open_desc(int i) {
 		//desc_window.offset = width() + 10;
 		desc_window.move(x() - desc_window.width() - 10, y());
 	}
+}
+
+void rss_gui::refresh_update() {
+
+	update_timer.stop();
+
+	//TODO Find otu how to manually invoke QT signals.
+	//update_timer.timeout();
+	update();
+
+	update_timer.start();
+	
 }
 
 void rss_gui::update() {

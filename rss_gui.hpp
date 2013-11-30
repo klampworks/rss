@@ -51,6 +51,7 @@ class rss_gui : public fragment {
 	public slots:
 	void open_desc(int);
 	void update();
+	void refresh_update();
 		
 };
 #endif
