@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <functional>
 
 int main(int argc, char **argv) {
 
@@ -38,7 +39,9 @@ int main(int argc, char **argv) {
 
 	window.add_items(item_map);
 
-	std::thread t(rss_grabber::process_img_list, item_map, &window); t.detach();
+	auto cb = std::bind(&rss_gui::add_path, &window, std::placeholders::_1, std::placeholders::_2);
+
+	std::thread t(rss_grabber::process_img_list, item_map, std::move(cb)); t.detach();
 
 	window.show();
 	return app.exec();

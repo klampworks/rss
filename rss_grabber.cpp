@@ -112,14 +112,14 @@ std::string process_img(std::string &&link) {
 	return std::move(name);
 }
 
-void process_img_list(const std::map<unsigned, rss_item> &list, rss_gui *window) {
+void process_img_list(const std::map<unsigned, rss_item> &list, 
+	std::function<void(unsigned, std::string&&)> &&cb) {
 
 	for (const auto &l: list) {
 
 		std::string link;
 		link.assign(l.second.link.begin(), l.second.link.end());
-		std::string filepath = process_img(std::move(link));
-		window->add_path(l.first, std::move(filepath));
+		cb(l.first, process_img(std::move(link)));
 	}
 }
 

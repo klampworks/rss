@@ -6,13 +6,13 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "rss_gui.hpp"
+#include <functional>
 
 class rss_item;
 
 namespace rss_grabber {
 
-	void process_img_list(const std::map<unsigned, rss_item> &list, rss_gui *window);
+	void process_img_list(const std::map<unsigned, rss_item> &list, std::function<void(unsigned, std::string&&)>&&);
 	std::string grab_xml(const char *url);
 }
 #endif
