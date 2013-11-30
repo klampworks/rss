@@ -22,14 +22,6 @@ class desc_gui : public fragment {
 	void set_image(const std::string &);
 
 	protected:
-	std::vector<QPushButton*> items;
-	QVBoxLayout v_layout, base_layout;
-	QScrollArea s;
-	QWidget contents;
-
-	QFont item_font;
-	QPalette item_bg;
-
 	QTextEdit description;
 	QHBoxLayout layout;
 	QLabel image;
