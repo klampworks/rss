@@ -28,11 +28,17 @@ int main(int argc, char **argv) {
 		items = rss_parser::parse_xml(xml);
 	}
 
+	//Convert to map
+	std::map<unsigned, rss_item> item_map;
 
-	for (const auto &item : items) {
-		window.add_item(item);
+	//TODO make rss_parser return a map in the first place.
+	for (unsigned i = 0; i < items.size(); i++) {
+		item_map[i] = items[i];
 	}
-	std::thread t(rss_grabber::process_img_list, items); t.detach();
+
+	window.add_items(item_map);
+
+	std::thread t(rss_grabber::process_img_list, item_map); t.detach();
 
 	window.show();
 	return app.exec();

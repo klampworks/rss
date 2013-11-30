@@ -14,6 +14,7 @@
 #include "desc_gui.hpp"
 #include "rss_item.hpp"
 #include <QSignalMapper>
+#include <map>
 
 class rss_gui : public fragment { 
 
@@ -21,11 +22,11 @@ class rss_gui : public fragment {
 
 	public: 
 	rss_gui(QWidget *parent = NULL);
-	void add_item(rss_item);
+	void add_items(std::map<unsigned, rss_item>);
 
 	protected:
 	std::vector<QPushButton*> items;
-	std::vector<rss_item> item_list;
+	std::map<unsigned, rss_item> item_list;
 	QVBoxLayout v_layout, base_layout;
 	QScrollArea s;
 	QWidget contents;

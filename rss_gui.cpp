@@ -45,21 +45,26 @@ rss_gui::rss_gui(QWidget *parent) : fragment(parent), desc_window(), sigmap(this
 	QObject::connect(&sigmap, SIGNAL(mapped(int)), this, SLOT(open_desc(int)));
 }
 
-void rss_gui::add_item(rss_item item) {
+//Needs to be a copy, unfortunantly.
+void rss_gui::add_items(std::map<unsigned, rss_item> item_map) {
 
-	QPushButton *b = new QPushButton(QString::fromWCharArray(item.title.c_str()));
-	b->setFlat(true);
-	b->setFont(item_font);
-	b->setPalette(item_bg);
-	//connect(b, SIGNAL(clicked()), this, SLOT(open_desc(item_list.size())));
-	QObject::connect(b, SIGNAL(clicked()), &sigmap, SLOT(map()));
-	sigmap.setMapping(b, item_list.size());
+	//TODO: Used a fixed length list and handle updates correctly.
+	item_list = item_map;
 
-	v_layout.addWidget(b);
-	b->show();
+	for (const auto &item : item_list) { 
 
-	items.push_back(b);
-	item_list.push_back(item);
+		QPushButton *b = new QPushButton(QString::fromWCharArray(item.second.title.c_str()));
+		b->setFlat(true);
+		b->setFont(item_font);
+		b->setPalette(item_bg);
+		QObject::connect(b, SIGNAL(clicked()), &sigmap, SLOT(map()));
+		sigmap.setMapping(b, item.first);
+
+		v_layout.addWidget(b);
+		b->show();
+
+		items.push_back(b);
+	}
 }
 
 #include <iostream>

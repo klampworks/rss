@@ -109,12 +109,13 @@ void process_img(std::string &&link) {
 	} //else we already have this image, nevermind.
 }
 
-void process_img_list(const std::vector<rss_item> &list) {
+void process_img_list(const std::map<unsigned, rss_item> &list) {
 
 	for (const auto &l: list) {
 		std::string link;
-		link.assign(l.link.begin(), l.link.end());
+		link.assign(l.second.link.begin(), l.second.link.end());
 		process_img(std::move(link));
 	}
 }
+
 }
