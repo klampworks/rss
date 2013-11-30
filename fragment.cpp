@@ -2,16 +2,17 @@
 #include <QDesktopWidget>
 #include <QApplication>
 
-fragment::fragment(QWidget *parent) : QWidget(parent) {
+fragment::fragment(QColor bg_colour, 
+	QWidget *parent) : 
+		QWidget(parent),
+		colour(bg_colour) {
 
 	setAttribute(Qt::WA_TranslucentBackground);
 	setWindowFlags(Qt::FramelessWindowHint);
 	setAttribute(Qt::WA_X11DoNotAcceptFocus);
 	
 	this->corner = 15;
-	this->colour = QColor(11, 11, 44, 127);
 	offset = 0;
-
 }
 
 void fragment::paintEvent(QPaintEvent *e) {
@@ -21,6 +22,7 @@ void fragment::paintEvent(QPaintEvent *e) {
 	draw_lines(&qp);
 
 	//TODO: This is a hack.
+	
 	QDesktopWidget *desktop = QApplication::desktop();
 	int width = desktop->width();
 	move((width - this->width())-1-offset, 410);

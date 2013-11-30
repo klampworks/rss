@@ -7,11 +7,11 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
-desc_gui::desc_gui(QWidget *parent) : fragment(parent),
+desc_gui::desc_gui(QColor bg_colour, QWidget *parent) : 
+	fragment(bg_colour, parent),
 	description(),
 	layout(this) {
 
-	//TODO: How much of this is inherited from fragment...?
 	setMaximumHeight(200);
 	setFixedHeight(200);
 

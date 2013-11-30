@@ -10,10 +10,9 @@
 #include "rss_parser.hpp"
 #include <thread>
 
-
-rss_gui::rss_gui(std::string url_p, QWidget *parent) : 
-	fragment(parent), 
-	desc_window(), 
+rss_gui::rss_gui(std::string url_p, QColor bg_colour, QWidget *parent) : 
+	fragment(bg_colour, parent), 
+	desc_window(bg_colour), 
 	sigmap(this),
 	url(url_p) {
 

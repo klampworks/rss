@@ -17,7 +17,7 @@
 class desc_gui : public fragment { 
 
 	public: 
-	desc_gui(QWidget *parent = NULL);
+	desc_gui(QColor, QWidget *parent = NULL);
 	void add_desc(QString &&);
 	void set_image(const std::string &);
 

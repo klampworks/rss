@@ -22,7 +22,7 @@ class rss_gui : public fragment {
 	Q_OBJECT
 
 	public: 
-	rss_gui(std::string, QWidget *parent = NULL);
+	rss_gui(std::string, QColor, QWidget *parent = NULL);
 	void add_path(unsigned, std::string&&);
 
 	protected:
