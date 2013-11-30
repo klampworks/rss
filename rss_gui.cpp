@@ -51,6 +51,12 @@ void rss_gui::add_items(std::map<unsigned, rss_item> item_map) {
 	//TODO: Used a fixed length list and handle updates correctly.
 	item_list = item_map;
 
+	while (items.size()) {
+		v_layout.removeWidget(items.back());
+		delete items.back();
+		items.pop_back();
+	}
+
 	for (const auto &item : item_list) { 
 
 		QPushButton *b = new QPushButton(QString::fromWCharArray(item.second.title.c_str()));
