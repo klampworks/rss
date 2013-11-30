@@ -70,18 +70,9 @@ rss_gui::rss_gui(std::string url_p, QColor bg_colour, QWidget *parent) :
 
 	QObject::connect(&sigmap, SIGNAL(mapped(int)), this, SLOT(open_desc(int)));
 
-	if (url.empty()) {
-
-		//This is just for debugging really.
-		item_list = rss_parser::parse_file("rss.xml");
-		update_items();
-		auto cb = std::bind(&rss_gui::add_path, this, std::placeholders::_1, std::placeholders::_2);
-		std::thread t(rss_grabber::process_img_list, item_list, std::move(cb)); t.detach();
-	} else {
-		connect(&update_timer, SIGNAL(timeout()), this, SLOT(update()));
-	//	update_timer.start(1000);
-		update();
-	}
+	connect(&update_timer, SIGNAL(timeout()), this, SLOT(update()));
+	update_timer.start(1000*60*30);
+	update();
 }
 
 void rss_gui::update_items() {
@@ -166,11 +157,16 @@ void rss_gui::refresh_update() {
 
 void rss_gui::update() {
 
-	std::string xml = rss_grabber::grab_xml(url.c_str());
-	item_list = rss_parser::parse_xml(xml);
+	if (url.empty()) {
+
+		//This is just for debugging really.
+		item_list = rss_parser::parse_file("rss.xml");
+	} else { 
+		std::string xml = rss_grabber::grab_xml(url.c_str());
+		item_list = rss_parser::parse_xml(xml);
+	}
 
 	update_items();
-
 	auto cb = std::bind(&rss_gui::add_path, this, std::placeholders::_1, std::placeholders::_2);
 	std::thread t(rss_grabber::process_img_list, item_list, std::move(cb)); t.detach();
 }
