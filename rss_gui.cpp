@@ -94,6 +94,15 @@ void rss_gui::add_path(unsigned index, std::string &&path) {
 	item_list[index].path = path;
 }
 
+void rss_gui::paintEvent(QPaintEvent *e) {
+
+	QDesktopWidget *desktop = QApplication::desktop();
+	int width = desktop->width();
+	move((width - this->width())-1-offset, 410);
+
+	fragment::paintEvent(e);
+}
+
 void rss_gui::open_desc(int i) {
 
 	//Avoid multiple hash lookups.
@@ -106,7 +115,8 @@ void rss_gui::open_desc(int i) {
 		desc_window.hide();
 	} else {
 		desc_window.show();
-		desc_window.offset = width() + 10;
+		//desc_window.offset = width() + 10;
+		desc_window.move(x() - desc_window.width() - 10, y());
 	}
 }
 

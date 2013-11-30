@@ -24,6 +24,7 @@ class rss_gui : public fragment {
 	public: 
 	rss_gui(std::string, QColor, QWidget *parent = NULL);
 	void add_path(unsigned, std::string&&);
+	void paintEvent(QPaintEvent *e);
 
 	protected:
 	std::vector<QPushButton*> items;

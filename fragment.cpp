@@ -20,12 +20,6 @@ void fragment::paintEvent(QPaintEvent *e) {
 	Q_UNUSED(e);
 	QPainter qp(this);
 	draw_lines(&qp);
-
-	//TODO: This is a hack.
-	
-	QDesktopWidget *desktop = QApplication::desktop();
-	int width = desktop->width();
-	move((width - this->width())-1-offset, 410);
 }
 
 void fragment::draw_lines(QPainter *qp) {
