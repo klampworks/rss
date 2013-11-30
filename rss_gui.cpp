@@ -30,7 +30,16 @@ rss_gui::rss_gui(std::string url_p, QColor bg_colour, QWidget *parent) :
 	settings.setPalette(pal);
 	settings.setFixedSize(16, 16);
 
+	refresh.setIcon(QPixmap(QString("refresh.png")));
+	refresh.setFlat(true);
+	refresh.setPalette(pal);
+	refresh.setFixedSize(16, 16);
+
+	topbar_title.setText("Title");
+	topbar_title.setAlignment(Qt::AlignHCenter);
+
 	topbar.addWidget(&topbar_title);
+	topbar.addWidget(&refresh);
 	topbar.addWidget(&settings);
 	base_layout.addLayout(&topbar);
 
