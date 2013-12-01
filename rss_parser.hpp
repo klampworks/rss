@@ -31,10 +31,16 @@ struct rss_grammar : boost::spirit::qi::grammar<std::wstring::const_iterator, rs
         boost::spirit::qi::rule<std::wstring::const_iterator, boost::spirit::qi::locals<int>, wchar_t()> html_entity;
 };
 
+struct title_grammar : boost::spirit::qi::grammar<std::string::const_iterator, std::string()> {
+
+	title_grammar();
+	boost::spirit::qi::rule<std::string::const_iterator, std::string()> start;
+};
+
 namespace rss_parser {
 
-	std::map<unsigned, rss_item> parse_file(const char *);
-	std::map<unsigned, rss_item> parse_xml(const std::string &xml);
+	std::map<unsigned, rss_item> parse_file(const char *, std::string &title);
+	std::map<unsigned, rss_item> parse_xml(const std::string &xml, std::string &title);
 	std::string parse_img(const std::string &xml);
 }
 #endif

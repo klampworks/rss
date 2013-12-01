@@ -157,14 +157,17 @@ void rss_gui::refresh_update() {
 
 void rss_gui::update() {
 
+	std::string title;
 	if (url.empty()) {
 
 		//This is just for debugging really.
-		item_list = rss_parser::parse_file("rss.xml");
+		item_list = rss_parser::parse_file("rss.xml", title);
 	} else { 
 		std::string xml = rss_grabber::grab_xml(url.c_str());
-		item_list = rss_parser::parse_xml(xml);
+		item_list = rss_parser::parse_xml(xml, title);
 	}
+
+	topbar_title.setText(QString::fromStdString(title));
 
 	update_items();
 	auto cb = std::bind(&rss_gui::add_path, this, std::placeholders::_1, std::placeholders::_2);

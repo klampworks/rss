@@ -102,36 +102,57 @@ rss_grammar::rss_grammar() : rss_grammar::base_type(start) {
         html_entity = (lit('&') >> lit('#') >> boost::spirit::int_[_a = _1] >> lit(';')[_val = _a]);
 }
 
+title_grammar::title_grammar() : title_grammar::base_type(start) {
+
+	start = boost::spirit::qi::lit("<channel>") >> 
+		*boost::spirit::ascii::space >>
+		boost::spirit::qi::lit("<title>") >> 
+		+(boost::spirit::ascii::char_ - boost::spirit::ascii::char_("<")) >> 
+		boost::spirit::qi::lit("</title>");
+}
+
 namespace rss_parser {
 
 
-	std::map<unsigned, rss_item> parse_xml(const std::string &xml_p) {
+	std::map<unsigned, rss_item> parse_xml(const std::string &xml_p, std::string &title) {
 
 		//Map indecies.
 		static unsigned count = 0;
 
 		rss_grammar g;
+		title_grammar gt;
 		std::map<unsigned, rss_item> ret;
 
+		std::string::const_iterator stt = xml_p.begin(),
+						enn = xml_p.end();
+
+		//Title will always come before the items.
+		do {
+			if (boost::spirit::qi::parse(stt, enn, gt, title))
+				break;
+			else
+				stt++;
+		} while (stt!=enn);
+
+		//Convert the wide characters because the items may contain unicode.
 		std::wstring xml;
 		xml.assign(xml_p.begin(), xml_p.end());
 		
 		std::wstring::const_iterator st = xml.begin(),
 						en = xml.end();
 
+		rss_item tmp;
 		do {
-			rss_item tmp;
-			if (boost::spirit::qi::parse(st, en, g, tmp)) {
+			if (boost::spirit::qi::parse(st, en, g, tmp))
 				ret[count++] = tmp;
-			} else {
+			else
 				st++;
-			}
 		} while (st!=en);
 
 		return std::move(ret);
 	}
 
-	std::map<unsigned, rss_item> parse_file(const char *filename) {
+	std::map<unsigned, rss_item> parse_file(const char *filename, std::string &title) {
 
 		std::ifstream ifs(filename);
 
@@ -141,7 +162,7 @@ namespace rss_parser {
 		while(std::getline(ifs, tmp))
 			xml += tmp;
 
-		return parse_xml(xml);
+		return parse_xml(xml, title);
 	}
 
 	std::string parse_img(const std::string &xml) {
