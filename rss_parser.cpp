@@ -113,7 +113,6 @@ title_grammar::title_grammar() : title_grammar::base_type(start) {
 
 namespace rss_parser {
 
-
 	std::map<unsigned, rss_item> parse_xml(const std::string &xml_p, std::string &title) {
 
 		//Map indecies.

@@ -109,7 +109,7 @@ void rss_gui::paintEvent(QPaintEvent *e) {
 
 	QDesktopWidget *desktop = QApplication::desktop();
 	int width = desktop->width();
-	move((width - this->width())-1-offset, 410);
+	move((width - this->width())-1-offset, 510);
 
 	fragment::paintEvent(e);
 }
