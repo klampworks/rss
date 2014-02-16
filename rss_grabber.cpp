@@ -57,8 +57,9 @@ namespace rss_grabber {
 std::string process_img(std::string &&link) {
 
 	//TODO: This refactoring is a bit vile....
-	const char *path = "cache/";
-	mkdir(path, 0777);
+	char *home = getenv ("HOME");
+	std::string path = home + std::string("/.config/rss/cache/");
+	mkdir(path.c_str(), 0777);
 
 	std::string t_link, name, xml;
 	std::ifstream ifs;
